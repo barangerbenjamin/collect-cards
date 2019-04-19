@@ -1,3 +1,4 @@
+require('dotenv').config();
 const tmi = require('tmi.js');
 
 const options = {
@@ -10,9 +11,9 @@ const options = {
   },
   identity: {
     username:'footmenhaubot',
-    password: 'oauth:kmnnl9a6xrncuv41i4jotaplsk67k7'
+    password: process.env["OAUTH"]
   },
-  channels: ['footmenhau'],
+  channels: ['slothxy'],
 };
 
 const client = new tmi.client(options)
@@ -20,14 +21,13 @@ const client = new tmi.client(options)
 client.connect();
 
 client.on('connected', (address, port) => {
-  client.action('footmenhaubot', 'Hello, I am connected')
+  client.action('slothxy', 'Hello, I am connected')
 })
 client.on('message', onMessageHandler);
 client.on('connected', onConnectedHandler);
 
 function onMessageHandler (target, context, msg, self) {
   if (self) { return; } // Ignore messages from the bot
-
   // Remove whitespace from chat message
   const commandName = msg.trim();
 
@@ -44,6 +44,19 @@ function onMessageHandler (target, context, msg, self) {
     const direction = moveRight();
     client.say(target, `You moved ${direction}`);
     console.log(`* Executed ${commandName} command`);
+  } else if (commandName === '!id') {
+      let id = context['user-id'];
+      client.say(target, `You're ID is ${id}`);
+  } else if (commandName === "!apime") {
+      client.api({
+          url: `https://api.twitch.tv/kraken/users/${context['user-id']}`,
+          headers: {
+            "Client-ID": process.env["CLIENT_ID"],
+            "Accept": "application/vnd.twitchtv.v5+json",
+          }
+      }, (err, res, body) => {
+          console.log(body);
+      });
   } else {
     console.log(`* Unknown command ${commandName}`);
   }
