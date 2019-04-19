@@ -1,0 +1,14 @@
+{
+  "name": "collect-cards",
+  "version": "1.0.0",
+  "description": "Collect twitch streamer cards",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Benjamin Baranger && Alexander Haumer",
+  "license": "ISC",
+  "dependencies": {
+    "tmi.js": "^1.4.2"
+  }
+}
